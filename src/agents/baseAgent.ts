@@ -99,6 +99,7 @@ export class BaseAgent {
     const agent = createReactAgent({
       llm: this.model,
       tools,
+      prompt, // Add the prompt here
     });
     
     // Create the agent executor
@@ -146,5 +147,18 @@ export class BaseAgent {
   clearTasks() {
     this.memory.tasks = [];
     console.log(`Cleared tasks for ${this.name}`);
+  }
+
+  addToContextualMemory(key: string, value: any) {
+    this.memory.contextualMemory[key] = value;
+    console.log(`Added to contextual memory for ${this.name}: ${key}`);
+  }
+
+  getFromContextualMemory(key: string): any {
+    return this.memory.contextualMemory[key];
+  }
+
+  getRecentHistory(n: number): string[] {
+    return this.memory.executionHistory.slice(-n);
   }
 }

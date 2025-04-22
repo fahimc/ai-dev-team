@@ -4,9 +4,14 @@ import { getAgent, getAllAgents } from '../agents';
 export class TaskScheduler {
   private running: boolean = false;
   private intervalId: number | null = null;
-  
+  private maxConcurrentTasks: number = 5; // Default value
+
   constructor() {
     console.log('Initializing Task Scheduler');
+  }
+
+  setMaxConcurrentTasks(limit: number) {
+    this.maxConcurrentTasks = limit;
   }
   
   start() {
@@ -49,10 +54,15 @@ export class TaskScheduler {
     
     console.log(`Found ${nextTasks.length} tasks to schedule`);
     
-    // Process each task
+    // Process each task concurrently, up to the max concurrent limit (implementation needed)
+    // For now, process sequentially and collect promises
+    const processingPromises: Promise<void>[] = [];
     for (const task of nextTasks) {
-      await this.processTask(task);
+      processingPromises.push(this.processTask(task));
     }
+
+    // Wait for all tasks in this cycle to finish processing
+    await Promise.all(processingPromises);
   }
   
   private async processTask(task: Task) {
