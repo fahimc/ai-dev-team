@@ -69,12 +69,14 @@ export class FileManager {
         console.warn(`Warnings for ${filePath}:`, validationResult.warnings);
         
         // Add to context memory
-        contextMemory.addMemory(
-          agent,
-          'observation',
-          `Warnings when creating ${filePath}: ${validationResult.warnings.join(', ')}`,
-          ['warning', 'validation', 'file-creation']
-        );
+        contextMemory.addEntry({
+          id: `${Date.now()}-${Math.random()}`,
+          agentName: agent,
+          type: 'observation',
+          content: `Warnings when creating ${filePath}: ${validationResult.warnings.join(', ')}`,
+          timestamp: new Date(),
+          tags: ['warning', 'validation', 'file-creation']
+        });
       }
       
       // If there are errors, don't create the file
@@ -82,12 +84,14 @@ export class FileManager {
         console.error(`Validation errors for ${filePath}:`, validationResult.errors);
         
         // Add to context memory
-        contextMemory.addMemory(
-          agent,
-          'error',
-          `Validation errors when creating ${filePath}: ${validationResult.errors.join(', ')}`,
-          ['error', 'validation', 'file-creation']
-        );
+        contextMemory.addEntry({
+          id: `${Date.now()}-${Math.random()}`,
+          agentName: agent,
+          type: 'observation', // Changed type to 'observation'
+          content: `Validation errors when creating ${filePath}: ${validationResult.errors.join(', ')}`,
+          timestamp: new Date(),
+          tags: ['error', 'validation', 'file-creation']
+        });
         
         return false;
       }
@@ -107,12 +111,14 @@ export class FileManager {
       this.operationsLog.push(operation);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'task',
-        `Created file: ${filePath}`,
-        ['file-creation']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'task',
+        content: `Created file: ${filePath}`,
+        timestamp: new Date(),
+        tags: ['file-creation']
+      });
       
       return true;
     } catch (error) {
@@ -120,12 +126,14 @@ export class FileManager {
       console.error(`Error creating file: ${errorMessage}`);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'error',
-        `Error creating file ${filePath}: ${errorMessage}`,
-        ['error', 'file-creation']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'observation', // Changed type to 'observation'
+        content: `Error creating file ${filePath}: ${errorMessage}`,
+        timestamp: new Date(),
+        tags: ['error', 'file-creation']
+      });
       
       return false;
     }
@@ -179,12 +187,14 @@ export class FileManager {
         console.warn(`Warnings for ${filePath}:`, validationResult.warnings);
         
         // Add to context memory
-        contextMemory.addMemory(
-          agent,
-          'observation',
-          `Warnings when updating ${filePath}: ${validationResult.warnings.join(', ')}`,
-          ['warning', 'validation', 'file-update']
-        );
+        contextMemory.addEntry({
+          id: `${Date.now()}-${Math.random()}`,
+          agentName: agent,
+          type: 'observation',
+          content: `Warnings when updating ${filePath}: ${validationResult.warnings.join(', ')}`,
+          timestamp: new Date(),
+          tags: ['warning', 'validation', 'file-update']
+        });
       }
       
       // If there are errors, don't update the file
@@ -192,12 +202,14 @@ export class FileManager {
         console.error(`Validation errors for ${filePath}:`, validationResult.errors);
         
         // Add to context memory
-        contextMemory.addMemory(
-          agent,
-          'error',
-          `Validation errors when updating ${filePath}: ${validationResult.errors.join(', ')}`,
-          ['error', 'validation', 'file-update']
-        );
+        contextMemory.addEntry({
+          id: `${Date.now()}-${Math.random()}`,
+          agentName: agent,
+          type: 'observation', // Changed type to 'observation'
+          content: `Validation errors when updating ${filePath}: ${validationResult.errors.join(', ')}`,
+          timestamp: new Date(),
+          tags: ['error', 'validation', 'file-update']
+        });
         
         return false;
       }
@@ -217,12 +229,14 @@ export class FileManager {
       this.operationsLog.push(operation);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'task',
-        `Updated file: ${filePath}`,
-        ['file-update']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'task',
+        content: `Updated file: ${filePath}`,
+        timestamp: new Date(),
+        tags: ['file-update']
+      });
       
       return true;
     } catch (error) {
@@ -230,12 +244,14 @@ export class FileManager {
       console.error(`Error updating file: ${errorMessage}`);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'error',
-        `Error updating file ${filePath}: ${errorMessage}`,
-        ['error', 'file-update']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'observation', // Changed type to 'observation'
+        content: `Error updating file ${filePath}: ${errorMessage}`,
+        timestamp: new Date(),
+        tags: ['error', 'file-update']
+      });
       
       return false;
     }
@@ -272,12 +288,14 @@ export class FileManager {
       console.error(`Error reading file: ${errorMessage}`);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'error',
-        `Error reading file ${filePath}: ${errorMessage}`,
-        ['error', 'file-read']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'observation', // Changed type to 'observation'
+        content: `Error reading file ${filePath}: ${errorMessage}`,
+        timestamp: new Date(),
+        tags: ['error', 'file-read']
+      });
       
       return null;
     }
@@ -309,12 +327,14 @@ export class FileManager {
       this.operationsLog.push(operation);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'task',
-        `Deleted file: ${filePath}`,
-        ['file-deletion']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'task',
+        content: `Deleted file: ${filePath}`,
+        timestamp: new Date(),
+        tags: ['file-deletion']
+      });
       
       return true;
     } catch (error) {
@@ -322,12 +342,14 @@ export class FileManager {
       console.error(`Error deleting file: ${errorMessage}`);
       
       // Add to context memory
-      contextMemory.addMemory(
-        agent,
-        'error',
-        `Error deleting file ${filePath}: ${errorMessage}`,
-        ['error', 'file-deletion']
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`,
+        agentName: agent,
+        type: 'observation', // Changed type to 'observation'
+        content: `Error deleting file ${filePath}: ${errorMessage}`,
+        timestamp: new Date(),
+        tags: ['error', 'file-deletion']
+      });
       
       return false;
     }

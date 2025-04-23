@@ -34,12 +34,14 @@ export class ErrorHandler {
     
     // Add to context memory if agent is provided
     if (agent) {
-      contextMemory.addMemory(
-        agent,
-        'error',
-        `Error in ${context}: ${error.message}`,
-        ['error', context]
-      );
+      contextMemory.addEntry({
+        id: `${Date.now()}-${Math.random()}`, // Simple unique ID
+        agentName: agent,
+        type: 'observation', // Using 'observation' type for errors
+        content: `Error in ${context}: ${error.message}`,
+        timestamp: new Date(),
+        tags: ['error', context]
+      });
     }
   }
   
