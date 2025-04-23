@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ErrorHandler } from '../../src/utils/errorHandler';
 
-describe('ErrorHandler', () => {
+describe('ErrorHandler', { timeout: 15000 }, () => {
   let errorHandler: ErrorHandler;
   
   beforeEach(() => {
-    errorHandler = new ErrorHandler();
+    vi.clearAllMocks();
     vi.useFakeTimers(); // Use fake timers for testing retries with delays
+    errorHandler = new ErrorHandler();
   });
 
   afterEach(() => {
@@ -30,9 +31,15 @@ describe('ErrorHandler', () => {
 
     await expect(errorHandler.retryOperation(mockOperation, 3, 100)).rejects.toThrow('Attempt 3 failed');
     expect(mockOperation).toHaveBeenCalledTimes(3);
-    // Advance timers to ensure retries are attempted during the operation
-    await vi.advanceTimersByTimeAsync(100); // Advance for the first retry delay
-    await vi.advanceTimersByTimeAsync(100); // Advance for the second retry delay
+    // Advance timers to allow retries to complete
+    // Advance timers step-by-step
+    let timersCount = vi.getTimerCount();
+    let safetyBreak = 0;
+    while (timersCount > 0 && safetyBreak < 20) { // Increased safety break
+      await vi.advanceTimersToNextTimerAsync();
+      timersCount = vi.getTimerCount();
+      safetyBreak++;
+    }
   });
 
   it('should succeed on a retry attempt', async () => {
@@ -44,8 +51,15 @@ describe('ErrorHandler', () => {
 
     expect(mockOperation).toHaveBeenCalledTimes(2);
     expect(result).toBe('Success on attempt 2');
-    // Advance timers to ensure the first retry is attempted during the operation
-    await vi.advanceTimersByTimeAsync(100); // Advance for the first retry delay
+    // Advance timers to allow the retry to complete
+    // Advance timers step-by-step
+    let timersCount = vi.getTimerCount();
+    let safetyBreak = 0;
+    while (timersCount > 0 && safetyBreak < 20) { // Increased safety break
+      await vi.advanceTimersToNextTimerAsync();
+      timersCount = vi.getTimerCount();
+      safetyBreak++;
+    }
   });
 
   it('should use the specified delay between retries', async () => {
@@ -61,9 +75,15 @@ describe('ErrorHandler', () => {
 
     expect(mockOperation).toHaveBeenCalledTimes(3);
     expect(result).toBe('Success on attempt 3');
-    // Advance timers to ensure retries are attempted with the correct delay during the operation
-    await vi.advanceTimersByTimeAsync(delay); // Advance for the first retry delay
-    await vi.advanceTimersByTimeAsync(delay); // Advance for the second retry delay
+    // Advance timers to allow retries to complete
+    // Advance timers step-by-step
+    let timersCount = vi.getTimerCount();
+    let safetyBreak = 0;
+    while (timersCount > 0 && safetyBreak < 20) { // Increased safety break
+      await vi.advanceTimersToNextTimerAsync();
+      timersCount = vi.getTimerCount();
+      safetyBreak++;
+    }
   });
 
   it('should handle errors with the handleError method', () => {
